@@ -1,6 +1,6 @@
 /*
 GUVA_S12SD - Arduino Library for GUVA-S12SD UV Sensors
-Copyright (C) 2023  dxcfl
+Copyright (C) 2023   dxcfl
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,15 +21,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class GUVA_S12SD
 {
-  public:
-    GUVA_S12SD(int channel, float supplyVoltage = 5.0);
-    void begin();
-    float readOutputVoltage();
-    float getUvIndex(float vout);
-    float getUvIndex();
-  private:
-    int channel;
-    float supplyVoltage;
+public:
+  GUVA_S12SD(int channel, float referenceVoltage = 5.0);
+  void begin();
+  float readOutputVoltage();   // mV (millivolts)
+  float readOutputVoltageMv(); // mV (millivolts)
+  float readAvgOutputVoltageMv(int count = 1024, int delayMs = 0);
+  float getUvIndex(float mv); // 0 - 11
+  float getUvLevel(float mv); // mW/m^2 (milliwatts per square meter)
+  void readSensor();
+  float getOutputVoltageMv(); // mV (millivolts)
+  float getUvIndex();         // 0 - 11
+  float getUvLevel();         // mW/m^2 (milliwatts per square meter)
+
+private:
+  int channel;
+  float referenceVoltageMv; // mV (millivolts)
+  float mvOut = -1;         // mV (millivolts)
+  float level = -1;         // mW/m^2 (milliwatts per square meter)
+  float index = -1;         // 0 - 11
 };
 
 #endif
